@@ -31,18 +31,21 @@ class ViewController: UIViewController {
     
     // triggered when any button is pressed
     @IBAction func buttonTouchUp(_ sender: UIButton) {
+        let hardness = sender.currentTitle!
+        let cookTime = cookTimes[hardness]!
+        
         // reset timer
         timer.invalidate()
         
         // set top label to in progress
-        topLabel.text = "Wait for it..."
+        topLabel.text = "\(hardness)..."
         
         
         // set progressBar progress to 0 %
         progressBar.progress = 0.0
         
         // get time to cook an egg
-        secondsRemaining = cookTimes[sender.currentTitle!]!
+        secondsRemaining = cookTime
         
         // tick timer every second
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
@@ -51,7 +54,7 @@ class ViewController: UIViewController {
                 self.secondsRemaining -= 1
                 
                 // set progressBar progress according to remaining seconds
-                let value = Float(self.cookTimes[sender.currentTitle!]! - self.secondsRemaining) / Float(self.cookTimes[sender.currentTitle!]!)
+                let value = Float(cookTime - self.secondsRemaining) / Float(cookTime)
                 self.progressBar.progress = value
                 
             } else {
@@ -90,5 +93,5 @@ class ViewController: UIViewController {
             print(error.localizedDescription)
         }
     }
-
+    
 }
