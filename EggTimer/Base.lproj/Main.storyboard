@@ -158,6 +158,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="progressBar" destination="umd-aT-MAD" id="RyO-oU-DmB"/>
                         <outlet property="topLabel" destination="XLm-5r-pSP" id="3dg-JQ-yK9"/>
                     </connections>
                 </viewController>
