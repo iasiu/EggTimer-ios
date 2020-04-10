@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     @IBOutlet weak var topLabel: UILabel!
@@ -19,6 +20,8 @@ class ViewController: UIViewController {
     var secondsRemaining: Int = 0
     
     var timer = Timer()
+    
+    var audioPlayer: AVAudioPlayer? = AVAudioPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +46,7 @@ class ViewController: UIViewController {
         
         // tick timer every second
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
-            if self.secondsRemaining > 0 {
+            if self.secondsRemaining > 1 {
                 // update secondsRemaining value
                 self.secondsRemaining -= 1
                 
@@ -60,7 +63,31 @@ class ViewController: UIViewController {
                 
                 // set progressBar progress to 100%
                 self.progressBar.progress = 1.0
+                
+                self.play_sound(soundName: "alarm_sound")
             }
+        }
+    }
+    
+    // function that plays wav sound of name given as parameter
+    func play_sound(soundName: String) {
+        guard let url = Bundle.main.url(forResource: soundName, withExtension: "mp3") else
+        { return }
+        
+        do {
+            // sound will play even if phone is silenced
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            guard let player = audioPlayer else { return }
+            
+            // start playing sound
+            player.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 
